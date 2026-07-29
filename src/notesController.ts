@@ -1,6 +1,32 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { NotesRepository } from './notesStore.js';
-import { requireAuth } from '../../auth-service/src/authController.js';
+
+const AUTH_SERVICE_URL = process.env.AUTH_SERVICE_URL || 'http://localhost:3001';
+
+async function requireAuth(req: Request, res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    res.status(401).json({ success: false, error: 'Authentication required. Missing token.' });
+    return;
+  }
+
+  try {
+    const authRes = await fetch(`${AUTH_SERVICE_URL}/api/auth/me`, {
+      headers: { Authorization: authHeader }
+    });
+    const json = await authRes.json();
+
+    if (!authRes.ok || !json.success) {
+      res.status(401).json({ success: false, error: json.error || 'Authentication failed. Invalid token.' });
+      return;
+    }
+
+    (req as any).userId = json.data.user.id;
+    next();
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message || 'Authentication service unavailable.' });
+  }
+}
 
 export const notesRouter = Router();
 

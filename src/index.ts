@@ -8,9 +8,7 @@ app.use('/api/notes', notesRouter);
 
 export { notesRouter };
 
-if (process.env.STANDALONE === 'true') {
-  const PORT = process.env.NOTES_PORT || 3002;
-  app.listen(PORT, () => {
-    console.log(`Notes API running standalone on port ${PORT}`);
-  });
-}
+const PORT = process.env.NOTES_PORT || 3002;
+app.listen(PORT, () => {
+  console.log(`Notes API running on port ${PORT}`);
+});
