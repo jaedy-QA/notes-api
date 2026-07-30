@@ -2,6 +2,24 @@
 
 Notes CRUD service for the Notes App.
 
+## How to run locally
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Start the service:
+
+```bash
+npm run dev
+```
+
+3. The service runs on port `3002` by default. If the auth service is not using the default host/port, set `AUTH_SERVICE_URL` before starting it.
+
+This service depends on the auth service being available for token validation.
+
 ## What it provides
 
 - `GET /api/notes`
