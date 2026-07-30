@@ -4,6 +4,8 @@ Notes CRUD service for the Notes App.
 
 ## How to run locally
 
+Important: for the full app, start it from the parent `my-notes-app` folder with `npm run dev`. Running this service alone from this folder only starts the notes API and does not start the frontend or auth service.
+
 1. Install dependencies:
 
 ```bash
